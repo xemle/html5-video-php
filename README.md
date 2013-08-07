@@ -107,11 +107,11 @@ Get profile data
 
 Get current ffmpeg version as array
 
-    getVersion() {
+    getVersion()
 
 Get list of supported encoders
 
-    getEncoders() {
+    getEncoders()
 
 
 Testing
