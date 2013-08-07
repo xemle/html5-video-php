@@ -21,6 +21,19 @@ require_once 'Cache' . DIRECTORY_SEPARATOR . 'CacheMock.php';
 require_once 'Process' . DIRECTORY_SEPARATOR . 'ProcessMock.php';
 
 class Html5VideoTest extends \PHPUnit_Framework_TestCase {
+  var $resourceDir;
+  var $sysConfig = false;
+
+  protected function setUp() {
+    parent::setUp();
+    $this->resourceDir = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'Resource' . DIRECTORY_SEPARATOR;
+    if (isset($_ENV['ffmpeg.bin']) && isset($_ENV['qt-faststart.bin']) && is_writable($this->resourceDir)) {
+      $this->sysConfig = array(
+        'ffmpeg.bin' => $_ENV['ffmpeg.bin'],
+        'qt-faststart.bin' => $_ENV['qt-faststart.bin']
+        );
+    }
+  }
 
   protected function createHtml5VideoMock($process = null, $cache = null) {
     if (!$process) {
@@ -148,5 +161,53 @@ EOT;
     $this->assertEquals(1, $info['duration']);
     $this->assertEquals(768, $info['width']);
     $this->assertEquals(576, $info['height']);
+  }
+
+  public function testConvertMp4() {
+    if (!$this->sysConfig) {
+      return;
+    }
+
+    $profileName = '720p-sd';
+    $targetFormat = 'mp4';
+
+    $html5 = new Html5Video($this->sysConfig);
+    $dst = $this->resourceDir . 'test-' . $profileName . '.' . $targetFormat;
+    $html5->create($this->resourceDir . 'video.ogg', $dst, $targetFormat, $profileName);
+
+    $this->assertTrue(file_exists($dst));
+    unlink($dst);
+  }
+
+  public function testConvertWebm() {
+    if (!$this->sysConfig) {
+      return;
+    }
+
+    $profileName = '480p-sd';
+    $targetFormat = 'webm';
+
+    $html5 = new Html5Video($this->sysConfig);
+    $dst = $this->resourceDir . 'test-' . $profileName . '.' . $targetFormat;
+    $html5->create($this->resourceDir . 'video.ogg', $dst, $targetFormat, $profileName);
+
+    $this->assertTrue(file_exists($dst));
+    unlink($dst);
+  }
+
+  public function testConvertOgg() {
+    if (!$this->sysConfig) {
+      return;
+    }
+
+    $profileName = '240p-sd';
+    $targetFormat = 'ogg';
+
+    $html5 = new Html5Video($this->sysConfig);
+    $dst = $this->resourceDir . 'test-' . $profileName . '.' . $targetFormat;
+    $html5->create($this->resourceDir . 'video-no-audio.ogg', $dst, $targetFormat, $profileName);
+
+    $this->assertTrue(file_exists($dst));
+    unlink($dst);
   }
 }

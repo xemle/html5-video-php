@@ -5,4 +5,12 @@
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+      <!-- 
+        Configure your ffmpeg and qt-faststart binaries here to run 
+        conversion tests
+        -->
+      <env name="ffmpeg.bin" value="/usr/bin/ffmpeg"/>
+      <env name="qt-faststart.bin" value="/usr/bin/qt-faststart"/>
+    </php>
 </phpunit>
