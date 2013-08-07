@@ -114,9 +114,6 @@ Get list of supported encoders
     getEncoders() {
 
 
-
-
-
 Testing
 -------
 
