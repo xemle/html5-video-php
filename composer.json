@@ -1,0 +1,25 @@
+{
+  "name": "xemle/html5-video-php",
+  "keywords": ["html5", "video", "convert", "converter", "mp4", "webm", "ogg", "ffmpeg"],
+  "description": "Convert videos to HTML5 compatible video formats MP4, WEBM, and OGG videos to support all common mobile and desktop devices",
+  "version": "1.0.0",
+  "time": "2013-08-03",
+  "authors": [
+    {
+      "name": "Sebastian Felis",
+      "email": "sebastian@phtagr.org",
+      "homepage": "http://phtagr.org",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "email": "sebastian@phtagr.org"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "3.7.*"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-0": {"": "src/"}
+  }
+}
