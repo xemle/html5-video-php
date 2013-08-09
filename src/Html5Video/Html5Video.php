@@ -64,7 +64,7 @@ class Html5Video {
    * @param object $cache Cache object to store ffmpeg settings
    */
   function __construct($config = array(), $process = null, $cache = null) {
-    $this->config = array_merge((array) $config, $this->defaults);
+    $this->config = array_merge($this->defaults, (array) $config);
     $this->config['profile.dirs'] = (array) $this->config['profile.dirs'];
     $this->config['profile.dirs'][] = __DIR__ . DIRECTORY_SEPARATOR . 'Profiles';
 
