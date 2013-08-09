@@ -2,8 +2,8 @@
   "name": "xemle/html5-video-php",
   "keywords": ["html5", "video", "convert", "converter", "mp4", "webm", "ogg", "ffmpeg", "videojs", "flowplayer"],
   "description": "ffmpeg wrapper to convert videos to HTML5 compatible formats of MP4, WEBM, and OGG to support all common mobile devices and desktop browsers.",
-  "version": "1.0.1",
-  "time": "2013-08-03",
+  "version": "1.0.2",
+  "time": "2013-08-09",
   "authors": [
     {
       "name": "Sebastian Felis",

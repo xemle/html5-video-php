@@ -49,10 +49,6 @@ class Html5Video {
         'webm' => array('videoEncoder' => 'vpx', 'audioEncoder' => 'vorbis'),
         'ogg' => array('videoEncoder' => 'theora', 'audioEncoder' => 'vorbis')
         ),
-      /**
-       * For cached values
-       */
-      'tmp.dir' => __DIR__
   );
   private $config;
 
@@ -76,7 +72,7 @@ class Html5Video {
     if ($cache) {
       $this->Cache = $cache;
     } else {
-      $this->Cache = new Cache\FileCache($this->config['tmp.dir']);
+      $this->Cache = new Cache\MemoryCache();
     }
   }
 

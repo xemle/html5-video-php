@@ -17,7 +17,6 @@
 
 namespace Html5Video;
 
-require_once 'Cache' . DIRECTORY_SEPARATOR . 'CacheMock.php';
 require_once 'Process' . DIRECTORY_SEPARATOR . 'ProcessMock.php';
 
 class Html5VideoTest extends \PHPUnit_Framework_TestCase {
@@ -40,7 +39,7 @@ class Html5VideoTest extends \PHPUnit_Framework_TestCase {
       $process = new Process\ProcessMock();
     }
     if (!$cache) {
-      $cache = new Cache\CacheMock();
+      $cache = new Cache\MemoryCache();
     }
     $html5video = new Html5Video(array(), $process, $cache);
     return $html5video;

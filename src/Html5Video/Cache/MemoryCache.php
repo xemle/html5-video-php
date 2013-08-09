@@ -11,13 +11,13 @@
  * @copyright     Copyright (c) Sebastian Felis <sebastian@phtagr.org>
  * @link          http://github.com/xemle/html5-video-php
  * @package       Html5Video\Cache
- * @since         html5-video-php v 1.0.0
+ * @since         html5-video-php v 1.0.2
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace Html5Video\Cache;
 
-class CacheMock implements ICache {
+class MemoryCache implements ICache {
 
   var $data = array();
 
