@@ -210,11 +210,11 @@ class Html5Video {
 
     $videoEncoder = $this->searchEncoder($targetConfig['videoEncoder']);
     if (!$videoEncoder) {
-      throw new \Exception("Video encoder not found for ${$this->videoEncoderMap[$targetFormat]}");
+      throw new \Exception("Video encoder not found for video codec ${$targetConfig[$targetFormat]} for $targetFormat");
     }
     $audioEncoder = $this->searchEncoder($targetConfig['audioEncoder']);
     if (!$audioEncoder) {
-      throw new \Exception("Audio encoder not found for ${$this->audioEncoderMap[$targetFormat]}");
+      throw new \Exception("Audio encoder not found for audio codec ${$targetConfig[$targetFormat]} for $targetFormat");
     }
 
     if ($targetFormat == 'mp4') {
