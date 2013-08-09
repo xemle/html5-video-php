@@ -31,7 +31,7 @@ class Html5Video {
        */
       'ffmpeg.bin' => 'ffmpeg',
       /**
-       * Binary of ffmpeg
+       * Binary of qt-faststart
        */
       'qt-faststart.bin' => 'qt-faststart',
       /**
@@ -39,31 +39,31 @@ class Html5Video {
        */
       'profile.dirs' => array(),
       /**
+       * Additional video container formats. Array with 'videoEncoder' and
+       * 'audioEncoder' settings. Eg
+       *
+       * 'videoContainers' => array('flv' => array('videoEncoder' => 'flv', 'audioEncoder' => 'mp3'));
+       */
+      'videoContainers' => array(
+        'mp4' => array('videoEncoder' => 'x264', 'audioEncoder' => 'aac'),
+        'webm' => array('videoEncoder' => 'vpx', 'audioEncoder' => 'vorbis'),
+        'ogg' => array('videoEncoder' => 'theora', 'audioEncoder' => 'vorbis')
+        ),
+      /**
        * For cached values
        */
       'tmp.dir' => __DIR__
   );
   private $config;
 
-  private $videoEncoderMap = array(
-      'mp4'  => 'x264',
-      'webm' => 'vpx',
-      'ogg'  => 'theora'
-  );
-  private $audioEncoderMap = array(
-      'mp4'  => 'aac',
-      'webm' => 'vorbis',
-      'ogg'  => 'vorbis'
-  );
-
   /**
    * Constructor
    *
    * @param array $config Config array
-   * @param object $cache Cache object to store ffmpeg settings
    * @param object $process Process object to call external ffmpeg process
+   * @param object $cache Cache object to store ffmpeg settings
    */
-  function __construct($config = array(), $cache = null, $process = null) {
+  function __construct($config = array(), $process = null, $cache = null) {
     $this->config = array_merge((array) $config, $this->defaults);
     $this->config['profile.dirs'] = (array) $this->config['profile.dirs'];
     $this->config['profile.dirs'][] = __DIR__ . DIRECTORY_SEPARATOR . 'Profiles';
@@ -199,15 +199,20 @@ class Html5Video {
   protected function createConverter($targetFormat, $profileName) {
     $profile = $this->getProfile($profileName);
 
-    if (!isset($this->videoEncoderMap[$targetFormat]) || !isset($this->audioEncoderMap[$targetFormat])) {
+    $videoContainers = $this->config['videoContainers'];
+    if (!isset($videoContainers[$targetFormat])) {
       throw new \Exception("Unsupported target video container");
     }
+    $targetConfig = $videoContainers[$targetFormat];
+    if (!isset($targetConfig['videoEncoder']) || !isset($targetConfig['audioEncoder'])) {
+      throw new \Exception("Video or audio encoder are missing for target format $targetFormat");
+    }
 
-    $videoEncoder = $this->searchEncoder($this->videoEncoderMap[$targetFormat]);
+    $videoEncoder = $this->searchEncoder($targetConfig['videoEncoder']);
     if (!$videoEncoder) {
       throw new \Exception("Video encoder not found for ${$this->videoEncoderMap[$targetFormat]}");
     }
-    $audioEncoder = $this->searchEncoder($this->audioEncoderMap[$targetFormat]);
+    $audioEncoder = $this->searchEncoder($targetConfig['audioEncoder']);
     if (!$audioEncoder) {
       throw new \Exception("Audio encoder not found for ${$this->audioEncoderMap[$targetFormat]}");
     }
@@ -223,9 +228,10 @@ class Html5Video {
    * file and set width and height from the souce
    *
    * @param string $src Source video filename
+   * @param string $dst Desitination video filename
    * @param array $options Convert options
    */
-  protected function mergeOptions($src, &$options) {
+  protected function mergeOptions($src, $dst, &$options) {
     if (!isset($options['width']) && !isset($options['height'])) {
       $info = $this->getVideoInfo($src);
       $options['width'] = $info['width'];
@@ -234,8 +240,12 @@ class Html5Video {
         $options['audio'] = false;
       }
     }
+    if (!isset($options['targetFormat'])) {
+      $ext = strtolower(substr($dst, strrpos($dst, '.') + 1));
+      $options['targetFormat'] = $ext;
+    }
   }
-  
+
   /**
    * Get current version of ffmpeg
    *
@@ -345,20 +355,23 @@ class Html5Video {
     }
     return false;
   }
-  
+
   /**
    * Convert a given video to html5 video
    *
    * @param string $src Source filename
    * @param string $dst Destination filename
-   * @param string $targetFormat Target container format
    * @param string $profileName Profile name
    * @param array $options Additional options
+   * - targetFormat: target container format. Default extension of $dst
+   * - width: Width of source video
+   * - height: Height of source video
+   * - audio: true | false
    * @return mixed
    */
-  public function create($src, $dst, $targetFormat, $profileName, $options = array()) {
-    $this->mergeOptions($src, $options);
-    $converter = $this->createConverter($targetFormat, $profileName);
+  public function convert($src, $dst, $profileName, $options = array()) {
+    $this->mergeOptions($src, $dst, $options);
+    $converter = $this->createConverter($options['targetFormat'], $profileName);
     $result = $converter->create($src, $dst, $options);
     return $result;
   }

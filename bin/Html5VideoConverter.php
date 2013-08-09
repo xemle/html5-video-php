@@ -15,18 +15,15 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-require_once 'vendor/autoload.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 if (count($argv) < 3) {
-  die("Usage ${argv[0]} input output");
+  die("Usage ${argv[0]} input output [profile]");
 }
 
 $src = $argv[1];
 $dst = $argv[2];
-$targetFormat = strtolower(substr($dst, strrpos($dst, '.') + 1));
-
 $profileName = count($argv) > 2 ? $argv[3] : '720p-sd';
 
 $html5video = new Html5Video\Html5Video();
-
-$html5video->create($src, $dst, $targetFormat, $profileName);
+$html5video->convert($src, $dst, $profileName);

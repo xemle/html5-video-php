@@ -42,7 +42,7 @@ class Html5VideoTest extends \PHPUnit_Framework_TestCase {
     if (!$cache) {
       $cache = new Cache\CacheMock();
     }
-    $html5video = new Html5Video(array(), $cache, $process);
+    $html5video = new Html5Video(array(), $process, $cache);
     return $html5video;
   }
 
@@ -173,7 +173,7 @@ EOT;
 
     $html5 = new Html5Video($this->sysConfig);
     $dst = $this->resourceDir . 'test-' . $profileName . '.' . $targetFormat;
-    $html5->create($this->resourceDir . 'video.ogg', $dst, $targetFormat, $profileName);
+    $html5->convert($this->resourceDir . 'video.ogg', $dst, $profileName);
 
     $this->assertTrue(file_exists($dst));
     unlink($dst);
@@ -189,7 +189,7 @@ EOT;
 
     $html5 = new Html5Video($this->sysConfig);
     $dst = $this->resourceDir . 'test-' . $profileName . '.' . $targetFormat;
-    $html5->create($this->resourceDir . 'video.ogg', $dst, $targetFormat, $profileName);
+    $html5->convert($this->resourceDir . 'video.ogg', $dst, $profileName);
 
     $this->assertTrue(file_exists($dst));
     unlink($dst);
@@ -205,7 +205,7 @@ EOT;
 
     $html5 = new Html5Video($this->sysConfig);
     $dst = $this->resourceDir . 'test-' . $profileName . '.' . $targetFormat;
-    $html5->create($this->resourceDir . 'video-no-audio.ogg', $dst, $targetFormat, $profileName);
+    $html5->convert($this->resourceDir . 'video-no-audio.ogg', $dst, $profileName);
 
     $this->assertTrue(file_exists($dst));
     unlink($dst);
