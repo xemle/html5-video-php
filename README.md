@@ -10,12 +10,12 @@ devices it is tricky to convert videos to HTML5 compatible videos. This wrapper
 library makes HTML5 video conversion as easy as possible.
 
 To support most devices and browser MP4, WEBM, and OGG video container are
-supported. See (Video on the Web)[http://diveintohtml5.info/video.html] for
+supported. See [Video on the Web](http://diveintohtml5.info/video.html) for
 further details.
 
 To support also Apples iDevices like iPod, iPhone, and iPad following settings
 are used for MP4 format (see
-(Video Encoding, Flowplayer.org)[http://flash.flowplayer.org/plugins/javascript/ipad.html#video-encoding]):
+[Video Encoding, Flowplayer.org](http://flash.flowplayer.org/plugins/javascript/ipad.html#video-encoding)):
 
   * Baseline Profile
   * Level 3.0
@@ -33,7 +33,7 @@ $config = array(
 );
 $html5 = new Html5Video\Html5Video($config);
 
-$html5->convert('source.avi', 'html5-720p.mp4', '720p-sd);
+$html5->convert('source.avi', 'html5-720p.mp4', '720p-sd');
 ```
 
 ## Requirements
@@ -164,7 +164,7 @@ Options are:
   * `audio`: (bool) Enable/disable audio track
   * `targetFormat`: (string) Target format
 
-If `width` and `height` are given (recommended), Html5Video does not read read source
+If `width` and `height` are given (recommended), Html5Video does not read source
 video file to calculate resize sizes.
 
 
