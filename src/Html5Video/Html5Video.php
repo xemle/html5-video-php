@@ -284,7 +284,7 @@ class Html5Video {
     }
     $lines = array();
     $errCode = $this->Process->run($this->config['ffmpeg.bin'], $args, $lines);
-    if (!count($lines)) {
+    if (!count($lines) || $errCode != 0) {
       return array();
     }
 
