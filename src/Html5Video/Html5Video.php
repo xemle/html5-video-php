@@ -45,7 +45,7 @@ class Html5Video {
        * 'videoContainers' => array('flv' => array('videoEncoder' => 'flv', 'audioEncoder' => 'mp3'));
        */
       'videoContainers' => array(
-        'mp4' => array('videoEncoder' => 'x264', 'audioEncoder' => 'aac'),
+        'mp4' => array('videoEncoder' => array('x264', 'h264'), 'audioEncoder' => 'aac'),
         'webm' => array('videoEncoder' => 'vpx', 'audioEncoder' => 'vorbis'),
         'ogg' => array('videoEncoder' => 'theora', 'audioEncoder' => 'vorbis')
         ),
@@ -153,10 +153,20 @@ class Html5Video {
   /**
    * Search for matching encoder
    *
-   * @param string $needle Encoder type
+   * @param string|array $needle Encoder type
    * @return mixed
    */
   protected function searchEncoder($needle) {
+    if (is_array($needle)) {
+      foreach ($needle as $n) {
+        $result = $this->searchEncoder($n);
+        if ($result) {
+          return $result;
+        }
+      }
+      return false;
+    }
+
     $encoders = $this->getEncoders();
     foreach ($encoders as $encoder) {
       if (strpos($encoder, $needle) !== false) {
@@ -206,11 +216,11 @@ class Html5Video {
 
     $videoEncoder = $this->searchEncoder($targetConfig['videoEncoder']);
     if (!$videoEncoder) {
-      throw new \Exception("Video encoder not found for video codec ${$targetConfig[$targetFormat]} for $targetFormat");
+      throw new \Exception("Video encoder not found for video codec {$targetConfig['videoEncoder']} for $targetFormat");
     }
     $audioEncoder = $this->searchEncoder($targetConfig['audioEncoder']);
     if (!$audioEncoder) {
-      throw new \Exception("Audio encoder not found for audio codec ${$targetConfig[$targetFormat]} for $targetFormat");
+      throw new \Exception("Audio encoder not found for audio codec {$targetConfig['audioEncoder']} for $targetFormat");
     }
 
     if ($targetFormat == 'mp4') {
