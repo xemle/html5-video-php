@@ -67,7 +67,7 @@ class Html5Video {
     if ($process) {
       $this->Process = $process;
     } else {
-      $this->Process = new Process\Process();
+      $this->Process = new Process\ExecProcess();
     }
     if ($cache) {
       $this->Cache = $cache;
