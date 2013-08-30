@@ -28,7 +28,7 @@ class Process implements IProcess {
   private function escapeArgs(&$args) {
     $escaped = array();
     foreach ($args as $arg) {
-      $escaped[] = escapeshellcmd($arg);
+      $escaped[] = escapeshellarg($arg);
     }
     return $escaped;
   }
