@@ -96,6 +96,7 @@ class GenericConverter {
     if (!isset($options['audio']) || $options['audio'] !== false) {
       $this->addAudioArgs();
     }
+    $this->addAdditionalOptions();
     $this->addOption('-strict', 'experimental');
     $this->_args[] = '-y';
     $this->_args[] = $dst;
