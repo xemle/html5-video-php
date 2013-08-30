@@ -49,6 +49,11 @@ class Html5Video {
         'webm' => array('videoEncoder' => array('vpx', 'vp8'), 'audioEncoder' => 'vorbis'),
         'ogg' => array('videoEncoder' => 'theora', 'audioEncoder' => 'vorbis')
         ),
+      /**
+       * Converting videos is time consuming. Disable time limit if set
+       * to 0. Otherwise set timelimit in seconds. Default is 0 (disabled)
+       */
+      'timelimit' => 0
   );
   private $config;
 
@@ -377,6 +382,11 @@ class Html5Video {
     return false;
   }
 
+  protected function setTimeLimit() {
+    $timeLimit = max(0, intval($this->config['timelimit']));
+    set_time_limit($timeLimit);
+  }
+
   /**
    * Convert a given video to html5 video
    *
@@ -391,6 +401,7 @@ class Html5Video {
    * @return mixed
    */
   public function convert($src, $dst, $profileName, $options = array()) {
+    $this->setTimeLimit();
     $this->mergeOptions($src, $dst, $options);
     $converter = $this->createConverter($options['targetFormat'], $profileName);
     $result = $converter->create($src, $dst, $options);

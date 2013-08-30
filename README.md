@@ -155,6 +155,7 @@ Constructor
   * `qt-faststart.bin`: Binary of qt-faststart. Default is `qt-faststart`
   * `profile.dirs`: List of profile directories
   * `videoContainers`: Additional video container formats. Array with `videoEncoder` and `audioEncoder` settings. Eg `'videoContainers' => array('flv' => array('videoEncoder' => 'flv', 'audioEncoder' => 'mp3'))`
+  * `timelimit`: Time limit in seconds. 0 for no time. Default is 0
 
 `$process`: (Optional) Process object to call external ffmpeg process. See `Html5Video/Process/IProcess.php`
 `$cache`: (Optional) Cache object to store ffmpeg settings. See `Html5Video/Cache/ICache.php`
