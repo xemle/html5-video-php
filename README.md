@@ -59,8 +59,10 @@ and qt-faststart from [Windows qt-faststart Builds](http://ffmpeg.zeranoe.com/bl
 
 html5-video-php uses [composer](http://getcomposer.org)
 
-  $ curl -sS https://getcomposer.org/installer | php
-
+```
+$ curl -sS https://getcomposer.org/installer | php
+```
+ 
 
 ## Usage
 
