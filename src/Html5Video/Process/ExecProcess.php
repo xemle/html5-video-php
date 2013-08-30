@@ -42,7 +42,6 @@ class ExecProcess implements IProcess {
     if (PATH_SEPARATOR != '\\') {
       $cmd .= ' 2>&1';
     }
-    echo $cmd;
     
     exec($cmd, $output, $return_var);    
     return $return_var;
