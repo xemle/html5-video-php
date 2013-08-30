@@ -46,7 +46,7 @@ class Html5Video {
        */
       'videoContainers' => array(
         'mp4' => array('videoEncoder' => array('x264', 'h264'), 'audioEncoder' => 'aac'),
-        'webm' => array('videoEncoder' => 'vpx', 'audioEncoder' => 'vorbis'),
+        'webm' => array('videoEncoder' => array('vpx', 'vp8'), 'audioEncoder' => 'vorbis'),
         'ogg' => array('videoEncoder' => 'theora', 'audioEncoder' => 'vorbis')
         ),
   );
