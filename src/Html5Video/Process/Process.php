@@ -21,7 +21,7 @@ class Process implements IProcess {
 
   /**
    * Escape given argument array
-   * 
+   *
    * @param array $args
    * @return array Escaped arguments
    */
@@ -35,7 +35,7 @@ class Process implements IProcess {
 
   /**
    * Read stream content to output array
-   * 
+   *
    * @param resource $stream Stream resource
    * @param array $output
    */
@@ -56,9 +56,9 @@ class Process implements IProcess {
     );
 
     $cmd = $bin . ' ' . join(' ', $this->escapeArgs($args));
-    
+
     $process = proc_open($cmd, $pipeDescriptions, $pipes);
-    
+
     if (is_resource($process)) {
       stream_set_blocking($pipes[1], 1);
       stream_set_blocking($pipes[2], 1);
