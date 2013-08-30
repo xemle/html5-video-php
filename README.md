@@ -49,6 +49,12 @@ Following ffmpeg versions from 0.6 are supported
 $ sudo apt-get install ffmpeg x264
 ```
 
+### Windows builds
+
+Download latest ffmpeg from [Zeranoe FFmpeg builds](http://ffmpeg.zeranoe.com/builds)
+and qt-faststart from [Windows qt-faststart Builds](http://ffmpeg.zeranoe.com/blog/?p=59)
+
+
 ## Installing
 
 html5-video-php uses [composer](http://getcomposer.org)
