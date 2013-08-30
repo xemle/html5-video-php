@@ -45,6 +45,32 @@ class Html5VideoTest extends \PHPUnit_Framework_TestCase {
     return $html5video;
   }
 
+  public function testGetVersionWin() {
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => array('ffmpeg version git-N-30610-g1929807')));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+    $this->assertEquals(array(0, 6, 0), $html5video->getVersion());
+
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => array('ffmpeg version N-30956-g81ef892, Copyright (c) 2000-2011 the FFmpeg developers')));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+    $this->assertEquals(array(0, 7, 0), $html5video->getVersion());
+
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => array('ffmpeg version N-48409-g43adc62')));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+    $this->assertEquals(array(0, 8, 0), $html5video->getVersion());
+
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => array('ffmpeg version N-48610-gb23aff6 Copyright (c) 2000-2013 the FFmpeg developers')));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+    $this->assertEquals(array(1, 0, 1), $html5video->getVersion());
+
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => array('ffmpeg version N-49044-g89afa63')));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+    $this->assertEquals(array(1, 1, 0), $html5video->getVersion());
+
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => array('ffmpeg version N-55721-gc443689')));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+    $this->assertEquals(array(2, 0, 0), $html5video->getVersion());
+  }
+
   public function testGetVersion() {
     $outputs = array(
         'ffmpeg version 0.8.6-4:0.8.6-0ubuntu0.12.04.1, Copyright (c) 2000-2013 the Libav developers',

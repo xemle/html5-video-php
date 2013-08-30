@@ -262,12 +262,27 @@ class Html5Video {
     if ($version !== null) {
       return $version;
     }
-    $version = false;
+    $version = array(2, 0, 0);
 
     $lines = array();
     $result = $this->Process->run($this->config['ffmpeg.bin'], array('-version'), $lines);
     if ($result == 0 && $lines && preg_match('/^\w+\s(version\s)?(\d+)\.(\d+)\.(\d+).*/', $lines[0], $m)) {
       $version = array($m[2], $m[3], $m[4]);
+    } else if ($result == 0 && $lines && preg_match('/^\w+\s(version\s)?\S*N-(\d+)-.*/', $lines[0], $m)) {
+      $winVersion = $m[2];
+      if ($winVersion <= 30610) {
+        $version = array(0, 6, 0);
+      } else if ($winVersion <= 30956) {
+        $version = array(0, 7, 0);
+      } else if ($winVersion <= 48409) {
+        $version = array(0, 8, 0);
+      } else if ($winVersion <= 48610) {
+        $version = array(1, 0, 1);
+      } else if ($winVersion <= 49044) {
+        $version = array(1, 1, 0);
+      } else {
+        $version = array(2, 0, 0);
+      }
     }
     $this->Cache->write('version', $version);
     return $version;
