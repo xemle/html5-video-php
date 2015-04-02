@@ -34,6 +34,14 @@ class Html5VideoTest extends \PHPUnit_Framework_TestCase {
     }
   }
 
+  protected function invokeMethod(&$object, $methodName, array $parameters = array())
+  {
+      $reflection = new \ReflectionClass(get_class($object));
+      $method = $reflection->getMethod($methodName);
+      $method->setAccessible(true);
+      return $method->invokeArgs($object, $parameters);
+  }
+
   protected function createHtml5VideoMock($process = null, $cache = null) {
     if (!$process) {
       $process = new Process\ProcessMock();
@@ -71,16 +79,62 @@ class Html5VideoTest extends \PHPUnit_Framework_TestCase {
     $this->assertEquals(array(2, 0, 0), $html5video->getVersion());
   }
 
-  public function testGetVersion() {
-    $outputs = array(
-        'ffmpeg version 0.8.6-4:0.8.6-0ubuntu0.12.04.1, Copyright (c) 2000-2013 the Libav developers',
-        '  built on Apr  2 2013 17:02:36 with gcc 4.6.3'
+  public function testGetVersionDataProvider()
+  {
+    return array(
+      array(
+        array(
+          'ffmpeg version 0.8.6-4:0.8.6-0ubuntu0.12.04.1, Copyright (c) 2000-2013 the Libav developers',
+          '  built on Apr  2 2013 17:02:36 with gcc 4.6.3'
+        ),
+        array(0, 8, 6)
+      ),
+      array(
+        array(
+          'ffmpeg version git-2015-04-02-d759844 Copyright (c) 2000-2015 the FFmpeg developers',
+          'built with gcc 4.8 (Ubuntu 4.8.2-19ubuntu1)'
+        ),
+        array(2, 0, 0)
+      ),
     );
+  }
+
+  /**
+   * @dataProvider testGetVersionDataProvider
+   */
+  public function testGetVersion($outputs, $result) {
     $commandMock = new Process\ProcessMock(array('ffmpeg -version' => $outputs));
     $html5video = $this->createHtml5VideoMock($commandMock);
 
     $version = $html5video->getVersion();
-    $this->assertEquals(array(0, 8, 6), $version);
+    $this->assertEquals($result, $version);
+  }
+
+  public function testIsVersionIsGreaterOrEqualDataProvider()
+  {
+    return array(
+      array(array(2, 0, 0), array(0, 8), true),
+      array(array(2, 0, 0), array(0, 8, 0), true),
+      array(array(2, 0, 0), array(0, 11, 0), true),
+      array(array(2, 0, 0), array(2, 0, 0), true),
+      array(array(2, 0, 0), array(2, 0, 1), false),
+      array(array(2, 0, 0), array(2, 1), false),
+    );
+  }
+
+  /**
+   * @dataProvider testIsVersionIsGreaterOrEqualDataProvider
+   */
+  public function testIsVersionIsGreaterOrEqual($version, $other, $result)
+  {
+    $outputs = array(
+      'ffmpeg version '.implode('.', $version).'-4:0.8.6-0ubuntu0.12.04.1, Copyright (c) 2000-2013 the Libav developers',
+      '  built on Apr  2 2013 17:02:36 with gcc 4.6.3'
+    );
+    $commandMock = new Process\ProcessMock(array('ffmpeg -version' => $outputs));
+    $html5video = $this->createHtml5VideoMock($commandMock);
+
+    $this->assertSame($result, $this->invokeMethod($html5video, 'isVersionIsGreaterOrEqual', array($html5video->getVersion(), $other)));
   }
 
   public function testGetEncodersForVersion086() {

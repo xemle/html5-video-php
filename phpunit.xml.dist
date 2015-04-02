@@ -10,7 +10,7 @@
         Configure your ffmpeg and qt-faststart binaries here to run 
         conversion tests
         -->
-      <env name="ffmpeg.bin" value="/usr/bin/ffmpeg"/>
-      <env name="qt-faststart.bin" value="/usr/bin/qt-faststart"/>
+      <env name="ffmpeg.bin" value="ffmpeg"/>
+      <env name="qt-faststart.bin" value="qt-faststart"/>
     </php>
 </phpunit>

@@ -26,7 +26,7 @@ class Mp4Converter extends GenericConverter {
   protected function addVideoArgs(&$options) {
     parent::addVideoArgs($options);
 
-    $this->addOption('-pre:v', 'baseline');
+    $this->addOption('-profile:v', 'baseline');
     $this->addOption('-level', 30);
     $this->addOption('-refs', 1);
   }

@@ -148,7 +148,9 @@ class Html5Video {
   protected function isVersionIsGreaterOrEqual($version, $other) {
     $max = min(count($version), count($other));
     for ($i = 0; $i < $max; $i++) {
-      if ($version[$i] < $other[$i]) {
+      if ($version[$i] > $other[$i]) {
+        return true;
+      } elseif ($version[$i] < $other[$i]) {
         return false;
       }
     }
